@@ -1,6 +1,15 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * ReservationSystem class handles the main functionality of the airplane seat reservation system.
+ * It allows public users to sign up, log in, and manage reservations,
+ * while allowing administrators to view a manifest of all reserved seats.
+ *
+ * Programmed by: Nathan Dinh
+ * Date: 10/02/2024
+ */
+
 public class ReservationSystem {
 
     // Declare variables
@@ -9,6 +18,13 @@ public class ReservationSystem {
     private static final List<String> adminIds = Arrays.asList("admin1", "admin2"); // Example admin ids
     private static String reservationsFile;
     private static String usersFile;
+
+    /**
+     * Main method to start the reservation system.
+     *
+     * @param args Command line arguments for the reservation file and user file names.
+     */
+
     public static void main(String[] args) {
 
         if (args.length != 2) {
@@ -35,7 +51,7 @@ public class ReservationSystem {
         } else {
             loadUsers(reservationsFile);
             loadReservations(usersFile);
-            System.out.println("Existing Reservations and Users are loaded.");
+            System.out.println("Reservations and Users files loaded successfully.");
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -53,8 +69,13 @@ public class ReservationSystem {
         }
     }
 
-    private static void loadUsers(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+    /**
+     * Loading user data from file.
+     *
+     * @param filepath The provided file path.
+     */
+    private static void loadUsers(String filepath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -65,8 +86,13 @@ public class ReservationSystem {
         }
     }
 
-    private static void loadReservations(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+    /**
+     * Loading reservation data from file.
+     *
+     * @param filepath The provided file path.
+     */
+    private static void loadReservations(String filepath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -77,6 +103,11 @@ public class ReservationSystem {
         }
     }
 
+    /**
+     * Handles customer actions for signing up or logging in.
+     *
+     * @param scanner The scanner object to read user input.
+     */
     private static void handleCustomerViewingAction(Scanner scanner) {
         System.out.println("[S]ign Up or [L]og In?");
         String action = scanner.nextLine().toUpperCase();
@@ -117,6 +148,12 @@ public class ReservationSystem {
         }
     }
 
+    /**
+     * Displays the customer menu and handles their actions.
+     *
+     * @param scanner The scanner object to read user input.
+     * @param user    The current user who is logged in.
+     */
     private static void CustomerMenu(Scanner scanner, User user) {
         String option;
         do {
@@ -145,6 +182,12 @@ public class ReservationSystem {
         } while (!option.equals("D"));
     }
 
+    /**
+     * Handles seat reservation for a user.
+     *
+     * @param scanner The scanner object to read user input.
+     * @param user    The current user who is logged in.
+     */
     private static void makeReservation(Scanner scanner, User user) {
         while (true) {
             System.out.print("Enter seat number to reserve (example `1K` for a first-class seat): ");
@@ -174,6 +217,12 @@ public class ReservationSystem {
         }
     }
 
+    /**
+     * Handles reservation cancellation for a user.
+     *
+     * @param scanner The scanner object to read user input.
+     * @param user    The current user who is logged in.
+     */
     private static void cancelReservation(Scanner scanner, User user) {
         List<String> reservations = airplane.getUserReservations(user.getUserId());
         if (reservations.isEmpty()) {
@@ -188,7 +237,9 @@ public class ReservationSystem {
         boolean seatFound = false;
 
         for (String reservation : reservations) {
-            String[] parts = reservation.split(" "); // Split the reservation entry to extract the seat number
+            // Split the reservation entry to extract the seat number
+            // Since formatted is [seatNumber price]
+            String[] parts = reservation.split(" ");
             String seatNumber = parts[0];
             if (seatNumber.equals(cancelSeatNumber)) {
                 airplane.cancelReservation(cancelSeatNumber);
@@ -203,6 +254,11 @@ public class ReservationSystem {
         }
     }
 
+    /**
+     * Displays the reservations for a user.
+     *
+     * @param user The current user who is logged in.
+     */
     private static void viewReservations(User user) {
         List<String> reservations = airplane.getUserReservations(user.getUserId());
         if (reservations.isEmpty()) {
@@ -218,6 +274,11 @@ public class ReservationSystem {
         System.out.println("Total Balance Due: $" + total);
     }
 
+    /**
+     * Handles admin actions for viewing manifest and exiting the system.
+     *
+     * @param scanner The scanner object to read user input.
+     */
     private static void handleAdmin(Scanner scanner) {
         System.out.print("Enter Admin ID: ");
         String adminId = scanner.nextLine();
@@ -244,25 +305,27 @@ public class ReservationSystem {
             System.out.println("Invalid Admin ID.");
         }
     }
-        private static void saveData() {
-            try (PrintWriter userWriter = new PrintWriter(new FileWriter(usersFile));
-                 PrintWriter resWriter = new PrintWriter(new FileWriter(reservationsFile))) {
 
-                // Save users
-                for (User user : users.values()) {
-                    userWriter.println(user.getUserId() + "," + user.getPassword() + "," + user.getName());
-                }
+    /**
+     * Save reservation and user data to files created or loaded before.
+     */
+    private static void saveData() {
+        try (PrintWriter userWriter = new PrintWriter(new FileWriter(usersFile));
+            PrintWriter resWriter = new PrintWriter(new FileWriter(reservationsFile))) {
 
-                // Save reservations
-                for (Seat seat : airplane.getAllSeats()) {
-                    if (seat.isReserved()) {
-                        resWriter.println(seat.getSeatNumber() + "," + seat.getReservedBy());
-                    }
-                }
-
-            } catch (IOException e) {
-                System.out.println("Error saving data: " + e.getMessage());
+            // Save users
+            for (User user : users.values()) {
+                userWriter.println(user.getUserId() + "," + user.getPassword() + "," + user.getName());
             }
-        }
 
+            // Save reservations
+            for (Seat seat : airplane.getAllSeats()) {
+                if (seat.isReserved()) {
+                    resWriter.println(seat.getSeatNumber() + "," + seat.getReservedBy());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving data: " + e.getMessage());
+        }
+    }
 }

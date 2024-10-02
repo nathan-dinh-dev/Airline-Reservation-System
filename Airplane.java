@@ -3,6 +3,13 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Airplane class represents an airplane with a collection of seats.
+ * It manages seat reservations, cancellations, and seat availability.
+ *
+ * Programmed by: Nathan Dinh
+ * Date: 10/02/2024
+ */
 public class Airplane {
 
     // Declares variables
@@ -13,6 +20,10 @@ public class Airplane {
         defaultSeatsMap();
     }
 
+    /**
+     * Initializes the seat map with a default configuration.
+     * It defines seat type such as First Class, Economy Plus, and Economy.
+     */
     private void defaultSeatsMap() {
         // This is United First Class Seat
         // Row 1
@@ -464,11 +475,23 @@ public class Airplane {
         seats.put("53G", new Seat("53G", "Economy", 250));
     }
 
+    /**
+     * Checks if a seat is available for reservation.
+     *
+     * @param seatNumber The seat number to be checked.
+     * @return True if the seat is available, false otherwise.
+     */
     public boolean isSeatAvailable(String seatNumber) {
         Seat seat = seats.get(seatNumber);
         return seat != null && !seat.isReserved();
     }
 
+    /**
+     * Reserves a seat for a user if it is available.
+     *
+     * @param seatNumber The seat number to be reserved.
+     * @param userId     The ID of the user reserving the seat.
+     */
     public void reserveSeat(String seatNumber, String userId) {
         Seat seat = seats.get(seatNumber);
         if(seat != null && !seat.isReserved()) {
@@ -476,6 +499,11 @@ public class Airplane {
         }
     }
 
+    /**
+     * Cancels a reservation for a seat.
+     *
+     * @param seatNumber The seat number whose reservation is to be canceled.
+     */
     public void cancelReservation(String seatNumber) {
         Seat seat = seats.get(seatNumber);
         if (seat != null && seat.isReserved()) {
@@ -483,16 +511,46 @@ public class Airplane {
         }
     }
 
+    /**
+     * Displays the availability of all seats in a specific order:
+     * First Class, then Economy Plus, and finally Economy.
+     */
     public void showAvailability() {
         System.out.println("Seat Availability");
+
+        // Display First Class seats first
+        System.out.println("\nFirst Class:");
+        showSeatsByType("First");
+
+        // Display Economy Plus seats next
+        System.out.println("\nEconomy Plus:");
+        showSeatsByType("EPlus");
+
+        // Display Economy seats last
+        System.out.println("\nEconomy:");
+        showSeatsByType("Economy");
+    }
+
+    /**
+     * Displays the seats by type if they are available.
+     *
+     * @param seatType The type of the seat to display ("First", "EPlus", "Economy").
+     */
+    private void showSeatsByType(String seatType) {
         for (String seatNumber : seats.keySet()) {
             Seat seat = seats.get(seatNumber);
-            if (!seat.isReserved()) {
+            if (!seat.isReserved() && seat.getSeatType().equals(seatType)) {
                 System.out.println(seatNumber + ": " + seat.getSeatType() + " (price: $" + seat.getPrice() + ")");
             }
         }
     }
 
+    /**
+     * Retrieves a list of reservations made by a specific user.
+     *
+     * @param userId The ID of the user whose reservations are being retrieved.
+     * @return A list of reserved seats in the format "seatNumber $price".
+     */
     public List<String> getUserReservations(String userId) {
         List<String> reservedSeats = new ArrayList<>();
         for (Seat seat : seats.values()) {
@@ -503,10 +561,21 @@ public class Airplane {
         return reservedSeats;
     }
 
+    /**
+     * Gets the Seat object for a specific seat number.
+     *
+     * @param seatNumber The seat number to be retrieved.
+     * @return The Seat object associated with the seat number, or null if not found.
+     */
     public Seat getSeat(String seatNumber) {
         return seats.get(seatNumber);
     }
 
+    /**
+     * Retrieves a list of all seats in the airplane.
+     *
+     * @return A list of all Seat objects in the airplane.
+     */
     public List<Seat> getAllSeats() {
         return new ArrayList<>(seats.values());
     }}
