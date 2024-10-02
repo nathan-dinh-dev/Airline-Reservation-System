@@ -16,6 +16,14 @@ public class User {
         return userId;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
     public boolean isAuthenticated(String password) {
         return this.password.equals(password);
     }

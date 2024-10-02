@@ -3,9 +3,24 @@ public class Admin extends User {
         super(userId, userName, password);
     }
 
-    public void showManifest(Airplane airplane) {
+    public static void showManifest(Airplane airplane) {
         System.out.println("Manifest List:");
-        // Display reserved seats and corresponding passenger names
-        // Iterate over seats and print reservations
+
+        System.out.println("\nFirst Class:");
+        printManifestForClass(airplane,"First");
+
+        System.out.println("\nEconomy Plus:");
+        printManifestForClass(airplane, "EPlus");
+
+        System.out.println("\nEconomy:");
+        printManifestForClass(airplane, "Economy");
+    }
+
+    private static void printManifestForClass(Airplane airplane, String seatType) {
+        for (Seat seat : airplane.getAllSeats()) {
+            if (seat.isReserved() && seat.getSeatType().equals(seatType)) {
+                System.out.println(seat.getSeatNumber() + ": " + seat.getReservedBy());
+            }
+        }
     }
 }

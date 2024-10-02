@@ -18,32 +18,32 @@ public class Airplane {
         // Row 1
         seats.put("1A", new Seat("1A", "First", 1000));
         seats.put("1B", new Seat("1B", "First", 1000));
-        seats.put("1D", new Seat("1C", "First", 1000));
-        seats.put("1E", new Seat("1D", "First", 1000));
-        seats.put("1F", new Seat("1A", "First", 1000));
-        seats.put("1G", new Seat("1A", "First", 1000));
-        seats.put("1L", new Seat("1A", "First", 1000));
-        seats.put("1K", new Seat("1A", "First", 1000));
+        seats.put("1D", new Seat("1D", "First", 1000));
+        seats.put("1E", new Seat("1E", "First", 1000));
+        seats.put("1F", new Seat("1F", "First", 1000));
+        seats.put("1G", new Seat("1G", "First", 1000));
+        seats.put("1L", new Seat("1L", "First", 1000));
+        seats.put("1K", new Seat("1K", "First", 1000));
 
         // Row 2
         seats.put("2A", new Seat("2A", "First", 1000));
         seats.put("2B", new Seat("2B", "First", 1000));
-        seats.put("2D", new Seat("2C", "First", 1000));
-        seats.put("2E", new Seat("2D", "First", 1000));
-        seats.put("2F", new Seat("2A", "First", 1000));
-        seats.put("2G", new Seat("2A", "First", 1000));
-        seats.put("2L", new Seat("2A", "First", 1000));
-        seats.put("2K", new Seat("2A", "First", 1000));
+        seats.put("2D", new Seat("2D", "First", 1000));
+        seats.put("2E", new Seat("2E", "First", 1000));
+        seats.put("2F", new Seat("2F", "First", 1000));
+        seats.put("2G", new Seat("2G", "First", 1000));
+        seats.put("2L", new Seat("2L", "First", 1000));
+        seats.put("2K", new Seat("2K", "First", 1000));
 
         // Row 3
         seats.put("3A", new Seat("3A", "First", 1000));
         seats.put("3B", new Seat("3B", "First", 1000));
-        seats.put("3D", new Seat("3C", "First", 1000));
-        seats.put("3E", new Seat("3D", "First", 1000));
-        seats.put("3F", new Seat("3A", "First", 1000));
-        seats.put("3G", new Seat("3A", "First", 1000));
-        seats.put("3L", new Seat("3A", "First", 1000));
-        seats.put("3K", new Seat("3A", "First", 1000));
+        seats.put("3D", new Seat("3D", "First", 1000));
+        seats.put("3E", new Seat("3E", "First", 1000));
+        seats.put("3F", new Seat("3F", "First", 1000));
+        seats.put("3G", new Seat("3G", "First", 1000));
+        seats.put("3L", new Seat("3L", "First", 1000));
+        seats.put("3K", new Seat("3K", "First", 1000));
 
         // Row 4
         seats.put("4A", new Seat("4A", "First", 1000));
@@ -502,4 +502,11 @@ public class Airplane {
         }
         return reservedSeats;
     }
-}
+
+    public Seat getSeat(String seatNumber) {
+        return seats.get(seatNumber);
+    }
+
+    public List<Seat> getAllSeats() {
+        return new ArrayList<>(seats.values());
+    }}
