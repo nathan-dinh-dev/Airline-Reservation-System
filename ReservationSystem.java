@@ -32,8 +32,8 @@ public class ReservationSystem {
             return;
         }
 
-        reservationsFile = args[0];
-        usersFile = args[1];
+        reservationsFile = args[1];
+        usersFile = args[0];
 
         File reservationFile = new File(reservationsFile);
         File userFile = new File(usersFile);
